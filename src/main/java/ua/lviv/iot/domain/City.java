@@ -5,15 +5,14 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
-@Table(name = "country")
+@Table(name = "city")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public class Country {
+public class City {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
@@ -21,17 +20,20 @@ public class Country {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private Set<City> cities;
+    @ManyToOne
+    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+    private Country country;
 
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private Set<Item> items;
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private Set<Street> streets;
 
     @Override
     public String toString() {
-        return "Country{" +
+        return "City{" +
                 "id=" + id +
-                ", name='" + name +
+                ", name='" + name + '\'' +
+                ", country=" + country +
                 '}';
     }
+
 }
